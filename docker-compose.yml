@@ -1,0 +1,12 @@
+version: '3.3'
+
+services:
+  yeahlow-backend:
+    build:
+      context: .
+      dockerfile: ./ops/compose/yeahlow/Dockerfile
+    volumes:
+      - ./app:/yeahlow/app
+      - ./.env:/yeahlow/.env
+    ports:
+      - 3000:3000
