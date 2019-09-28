@@ -3,7 +3,6 @@ from random import *
 from datetime import *
 from dateutil.parser import parse
 from firebase_admin import firestore
-from places import Places
 
 class DataAccess:
 
@@ -28,7 +27,6 @@ class DataAccess:
 
 
     def getHotspots(self):
-        places = Places()
         hotspots = {}
         for row in self.votes:
             if row['vote'] != self.UPVOTE:
@@ -45,13 +43,12 @@ class DataAccess:
 
         records = []
         for key in hotspots:
-            place = places.get_nearest_place(location[0], location[1])
             location = key.split(',')
             records.append({
                 'latitude' : float(location[0]),
                 'longitude' : float(location[1]),
                 'hotness' : hotspots[key],
-                'place': place
+                'place': ''
             })
 
         return records
