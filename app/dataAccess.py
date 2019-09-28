@@ -22,7 +22,7 @@ class Votes:
 
     def getHotspots(self):
         hotspots = {}
-        for row in self.votes.stream():
+        for row in self.votes.where(u'vote', u'==', self.UPVOTE).stream():
             doc = row.to_dict()
             latitude = '{0:.3f}'.format(doc['location'].latitude)
             longitude = '{0:.3f}'.format(doc['location'].longitude)
