@@ -90,13 +90,17 @@ class DataAccess:
 
     def getSurpriseEvent(self, longitude, latitude, range):
         candidates = [x for x in self.events
-            if self.calculateDistance(
+            if (range * 0.9) <= self.calculateDistance(
                     longitude,
                     latitude,
                     x['longitude'],
                     x['latitude'])
-                <= range]
-
+                <= range * 1.1]
+        if not candidates:
+            event_distances = []
+            for event in self.events:
+                event_distances.append({'distance': self.calculateDistance(longitude, latitude, event['longitude'], event['latitude']), 'event':event})
+            return sorted(event_distances, key = lambda x: x['distance'])[0]['event']
         return choice(candidates)
 
     # src: https://stackoverflow.com/questions/19412462/getting-distance-between-two-points-based-on-latitude-longitude
