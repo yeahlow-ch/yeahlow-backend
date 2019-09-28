@@ -45,6 +45,18 @@ def api_get_events():
         return jsonify(**{"error": e})
 
 
+@app.route('/api/events/surprise', methods=['GET'])
+def api_get_suprise_event():
+    try:
+        longitude = float(request.args.get('longitude'))
+        latitude = float(request.args.get('latitude'))
+        range = float(request.args.get('range'))
+
+        return jsonify(dataAccess.getSurpriseEvent(longitude, latitude, range)), 200
+    except Exception as e:
+        return jsonify(**{"error": e})
+
+
 @app.route('/api/db', methods=['DELETE'])
 def api_delete_database():
     try:

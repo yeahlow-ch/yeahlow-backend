@@ -1,6 +1,7 @@
-from random import random
+from random import *
 from datetime import *
 from dateutil.parser import parse
+from math import sin, cos, sqrt, atan2, radians
 
 class DataAccess:
 
@@ -66,6 +67,40 @@ class DataAccess:
 
     def getEvents(self):
         return self.events
+
+
+    def getSurpriseEvent(self, longitude, latitude, range):
+        candidates = [x for x in self.events
+            if self.calculateDistance(
+                    longitude,
+                    latitude,
+                    x['longitude'],
+                    x['latitude'])
+                <= range]
+
+        return choice(candidates)
+
+    # src: https://stackoverflow.com/questions/19412462/getting-distance-between-two-points-based-on-latitude-longitude
+    def calculateDistance(self, lon1, lat1, lon2, lat2):
+        # approximate radius of earth in km
+        R = 6373.0
+
+        lat1r = radians(lat1)
+        lon1r = radians(lon1)
+        lat2r = radians(lat2)
+        lon2r = radians(lon2)
+
+        dlon = lon2r - lon1r
+        dlat = lat2r - lat1r
+
+        a = sin(dlat / 2)**2 + cos(lat1r) * cos(lat2r) * sin(dlon / 2)**2
+        c = 2 * atan2(sqrt(a), sqrt(1 - a))
+
+        distance = R * c
+
+        print(distance)
+
+        return distance
 
 
     def addFakeData(self):
