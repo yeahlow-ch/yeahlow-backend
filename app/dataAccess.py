@@ -15,14 +15,14 @@ class DataAccess:
         self.addFakeData()
 
 
-    def addVote(self, latitude, longitude, vote):
+    def addVote(self, latitude, longitude, vote, place):
         record = {
             'timestamp' : datetime.now(),
             'latitude' : latitude,
             'longitude' : longitude,
-            'vote' : vote
+            'vote' : vote,
+            'place': place
         }
-
         self.votes.append(record)
 
 
@@ -34,13 +34,11 @@ class DataAccess:
 
             latitude = '{0:.3f}'.format(row['latitude'])
             longitude = '{0:.3f}'.format(row['longitude'])
-            location = latitude + ',' + longitude
-
+            location = latitude + ',' + longitude + ',' + row['place']
             if location in hotspots:
-                hotspots[location] += 1
+                hotspots[location] += 1 
             else:
                 hotspots[location] = 1
-
         records = []
         for key in hotspots:
             location = key.split(',')
@@ -48,7 +46,7 @@ class DataAccess:
                 'latitude' : float(location[0]),
                 'longitude' : float(location[1]),
                 'hotness' : hotspots[key],
-                'place': ''
+                'place': location[2]
             })
 
         return records
@@ -108,10 +106,10 @@ class DataAccess:
     def addFakeData(self):
         # long, lat, count
         locations = [
-            (47.389717, 8.515884, 200), # technopark
-            (47.386245, 8.574252, 150), # zoo
-            (47.379190, 8.539851, 50), # national museum
-            (47.382547, 8.503395, 150) # letzigrund
+            (47.389717, 8.515884, 200, "Foundation Technopark Zurich"), # technopark
+            (47.386245, 8.574252, 150, "Zoo Zürich"), # zoo
+            (47.379190, 8.539851, 50, "Swiss National Museum"), # national museum
+            (47.382547, 8.503395, 150, "Stadion Letzigrund") # letzigrund
         ]
 
         for loc in locations:
@@ -119,7 +117,8 @@ class DataAccess:
                 self.addVote(
                     loc[0] + random() / 1000, 
                     loc[1] + random() / 1000, 
-                    self.UPVOTE)
+                    self.UPVOTE,
+                    loc[3])
 
         self.addEvent(
             'HackZurich 2019',
