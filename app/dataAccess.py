@@ -52,6 +52,7 @@ class DataAccess:
                 hotspots[place] = latitude + ',' + longitude + ',' + str(hot)
             else:
                 hotspots[place] = latitude + ',' + longitude + ',' + '1'
+
         records = []
         for key, val in hotspots.items():
             location = val.split(',')
@@ -67,7 +68,7 @@ class DataAccess:
             records.append({
                 'latitude' : float(location[0]),
                 'longitude' : float(location[1]),
-                'hotness' : hot / 3,
+                'hotness' : hot,
                 'hotness_color': hot_color,
                 'place': key
             })
