@@ -21,7 +21,8 @@ def api_post_votes():
         dataAccess.addVote(
             float(json_data['latitude']), 
             float(json_data['longitude']), 
-            int(json_data['vote'])
+            int(json_data['vote']),
+            "Foundation Technopark Zurich"
         )
 
         return jsonify({}), 201
