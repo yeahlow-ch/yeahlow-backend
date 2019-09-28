@@ -16,7 +16,8 @@ class DataAccess:
     def __init__(self):
         self.votes = []
         self.events = []
-        self.addFakeData()
+        self.addFakeEvents()
+        self.addFakeVotes()
 
 
     def addVote(self, latitude, longitude, vote, place):
@@ -29,8 +30,11 @@ class DataAccess:
         }
         self.votes.append(record)
 
-    def deleteAll(self):
+    def deleteAllVotes(self):
         self.votes = []
+
+
+    def deleteAllEvents(self):
         self.events = []
 
     def getHotspots(self):
@@ -131,7 +135,7 @@ class DataAccess:
         return distance
 
 
-    def addFakeData(self):
+    def addFakeVotes(self):
         locations = []
         with open('./data/locations.csv', 'r') as csvfile:
             reader = csv.reader(csvfile, delimiter=',')
@@ -150,6 +154,8 @@ class DataAccess:
                     self.UPVOTE,
                     loc[3])
 
+
+    def addFakeEvents(self):
         events = []
         with open('./data/events.csv', 'r') as csvfile:
             reader = csv.reader(csvfile, delimiter=',')

@@ -58,19 +58,37 @@ def api_get_suprise_event():
         return jsonify(**{"error": e})
 
 
-@app.route('/api/db', methods=['DELETE'])
-def api_delete_database():
+@app.route('/api/db/events', methods=['DELETE'])
+def api_delete_events():
     try:
-        dataAccess.deleteAll()
+        dataAccess.deleteAllEvents()
         return jsonify({}), 200
     except Exception as e:
         return jsonify(**{"error": e})
 
 
-@app.route('/api/db', methods=['POST'])
-def api_init_database():
+@app.route('/api/db/events', methods=['POST'])
+def api_init_events():
     try:
-        dataAccess.addFakeData()
+        dataAccess.addFakeEvents()
+        return jsonify({}), 200
+    except Exception as e:
+        return jsonify(**{"error": e})
+
+
+@app.route('/api/db/votes', methods=['DELETE'])
+def api_delete_votes():
+    try:
+        dataAccess.deleteAllVotes()
+        return jsonify({}), 200
+    except Exception as e:
+        return jsonify(**{"error": e})
+
+
+@app.route('/api/db/votes', methods=['POST'])
+def api_init_votes():
+    try:
+        dataAccess.addFakeVotes()
         return jsonify({}), 200
     except Exception as e:
         return jsonify(**{"error": e})
