@@ -5,6 +5,7 @@ from dateutil.parser import parse
 from firebase_admin import firestore
 from enum import Enum
 from colour import Color
+import uuid
 
 
 class DataAccess:
@@ -67,8 +68,9 @@ class DataAccess:
         return records
 
 
-    def addEvent(self, name, description, event_type, latitude, longitude, start_time, end_time, image_url):
+    def addEvent(self, id, name, description, event_type, latitude, longitude, start_time, end_time, image_url):
         record = {
+            'id': id,
             'name' : name,
             'description' : description,
             'type': event_type.name,
@@ -137,6 +139,7 @@ class DataAccess:
                     loc[3])
 
         self.addEvent(
+            uuid.uuid4(),
             'HackZurich 2019',
             'Europe\'s biggest Hackathon',
             self.Type.hackathon,
@@ -148,6 +151,7 @@ class DataAccess:
         )
         
         self.addEvent(
+            uuid.uuid4(),
             'Indiennes. Material for a thousand stories ',
             'In the 17th century indiennes – printed and painted cotton fabrics from India – became a popular commodity in Europe. Western manufacturers, including scores of Swiss companies, started producing their own versions of these precious items and very soon indiennes were everywhere. The exhibition at the National Museum tells the story of the production of these textiles, discusses colonial heritage and travels the trade routes between India, Europe and Switzerland. Very worth seeing are the many sumptuous fabrics, including valuable works on loan from Switzerland and abroad.',
             self.Type.culture,
@@ -159,6 +163,7 @@ class DataAccess:
         )
 
         self.addEvent(
+            uuid.uuid4(),
             'GC - FC Chiasso',
             'Challenge League Match',
             self.Type.sport,
@@ -170,6 +175,7 @@ class DataAccess:
         )
 
         self.addEvent(
+            uuid.uuid4(),
             'Geneva',
             'Something far away to test',
             self.Type.party,
