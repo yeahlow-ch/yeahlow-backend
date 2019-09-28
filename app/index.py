@@ -17,7 +17,15 @@ VOTES = firestore.client().collection('votes')
 def api_post_votes():
     try:
         json_data = request.get_json()
-        print(json_data)
+
+        record = {
+            'timestamp' : firestore.SERVER_TIMESTAMP,
+            'location' : firestore.GeoPoint(float(json_data['latitude']), float(json_data['longitude'])),
+            'vote' : int(json_data['vote'])
+        }
+
+        VOTES.add(record)
+
         return jsonify({}), 201
     except Exception as e:
         return jsonify(**{"error": e})
