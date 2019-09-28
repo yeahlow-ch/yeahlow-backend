@@ -29,6 +29,9 @@ class DataAccess:
         }
         self.votes.append(record)
 
+    def deleteAll(self):
+        self.votes = []
+        self.events = []
 
     def getHotspots(self):
         hotspots = {}
