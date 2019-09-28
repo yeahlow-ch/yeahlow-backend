@@ -4,17 +4,20 @@ from datetime import *
 from dateutil.parser import parse
 from firebase_admin import firestore
 from enum import Enum
+from colour import Color
+
 
 class DataAccess:
 
     DOWNVOTE = 0
     UPVOTE = 1
 
-    Type = Enum('Type', 'sport party animal hackathon culture')
+    Type = Enum('Type', 'sport party animal hackathon culture food')
 
     def __init__(self):
         self.votes = []
         self.events = []
+        self.vote_colors = list(Color("#ffff00").range_to(Color("#9c0005"),250))
         self.addFakeData()
 
 
@@ -48,10 +51,16 @@ class DataAccess:
         for key, val in hotspots.items():
             print(key, val)
             location = val.split(',')
+            hot = int(location[2])
+            if hot < 250:
+                hot_color = self.vote_colors[hot]
+            else:
+                hot_color = self.vote_colors[-1]
             records.append({
                 'latitude' : float(location[0]),
                 'longitude' : float(location[1]),
-                'hotness' : int(location[2]),
+                'hotness' : hot,
+                'hotness_color': hot_color.hex,
                 'place': key
             })
 
