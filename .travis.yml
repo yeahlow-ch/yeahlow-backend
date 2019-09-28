@@ -5,7 +5,7 @@ before_install:
   - echo "deb https://packages.cloudfoundry.org/debian stable main" | sudo tee /etc/apt/sources.list.d/cloudfoundry-cli.list
   - sudo apt-get update
   - sudo apt-get install -y cf-cli
-  - echo "$FIREBASE_CREDENTIALS" > firebase_key.json
+  - envsubst < firebase_key_base.json > firebase_key.json 
 script:
   - cf login -a https://api.eu-de.bluemix.net -u "$CF_USERNAME" -p "$CF_PASSWORD"
   - cf push -f manifest.yml
