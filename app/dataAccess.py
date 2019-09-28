@@ -63,7 +63,7 @@ class DataAccess:
             records.append({
                 'latitude' : float(location[0]),
                 'longitude' : float(location[1]),
-                'hotness' : hot,
+                'hotness' : hot / 3,
                 'hotness_color': hot_color,
                 'place': key
             })
