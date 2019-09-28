@@ -1,5 +1,5 @@
 import os
-from dataAccess import Votes
+from dataAccess import Votes, Events
 
 from dotenv import load_dotenv
 from flask import Flask, jsonify, request
@@ -15,14 +15,15 @@ CORS(app)
 
 cred = credentials.Certificate("./firebase_key.json")
 firebase_admin.initialize_app(cred)
-dataAccess = Votes(firestore.client().collection('votes'))
+VOTES = Votes(firestore.client().collection('votes'))
+EVENTS = Events(firestore.client().collection('events'))
 
 @app.route('/api/votes', methods=['POST'])
 def api_post_votes():
     try:
         json_data = request.get_json()
 
-        dataAccess.add(
+        VOTES.add(
             float(json_data['latitude']), 
             float(json_data['longitude']), 
             int(json_data['vote'])
@@ -36,7 +37,15 @@ def api_post_votes():
 @app.route('/api/votes', methods=['GET'])
 def api_get_votes():
     try:
-        return jsonify(dataAccess.getHotspots()), 200
+        return jsonify(VOTES.getHotspots()), 200
+    except Exception as e:
+        return jsonify(**{"error": e})
+
+
+@app.route('/api/events', methods=['GET'])
+def api_get_events():
+    try:
+        return jsonify(EVENTS.getEvents()), 200
     except Exception as e:
         return jsonify(**{"error": e})
 
@@ -44,7 +53,8 @@ def api_get_votes():
 @app.route('/api/db', methods=['DELETE'])
 def api_delete_database():
     try:
-        dataAccess.deleteAll()
+        VOTES.deleteAll()
+        EVENTS.deleteAll()
         return jsonify({}), 200
     except Exception as e:
         return jsonify(**{"error": e})
@@ -53,7 +63,8 @@ def api_delete_database():
 @app.route('/api/db', methods=['POST'])
 def api_init_database():
     try:
-        dataAccess.addFakeData()
+        VOTES.addFakeData()
+        EVENTS.addFakeData()
         return jsonify({}), 200
     except Exception as e:
         return jsonify(**{"error": e})

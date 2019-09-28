@@ -1,4 +1,5 @@
 from random import random
+from datetime import datetime
 from firebase_admin import firestore
 
 class Votes:
@@ -67,4 +68,74 @@ class Votes:
                     self.UPVOTE)
 
 
+class Events:
+
+    def __init__(self, eventsCollection):
+        self.events = eventsCollection
+
+
+    def addEvent(self, name, description, latitude, longitude, start_time, end_time, image_url):
+        record = {
+            'name' : name,
+            'description' : description,
+            'location' : firestore.GeoPoint(latitude, longitude),
+            'start_time' : start_time,
+            'end_time' : end_time,
+            'image_url' : image_url
+        }
+
+        self.events.add(record)
+
+
+    def getEvents(self):
+        records = []
+        for row in self.events.stream():
+            doc = row.to_dict()
+            records.append({
+                'name' : doc['name'],
+                'description' : doc['description'],
+                'latitude' : doc['location'].latitude,
+                'longitude' : doc['location'].longitude,
+                'start_time' : doc['start_time'],
+                'end_time' : doc['end_time'],
+                'image_url' : doc['image_url']
+            })
+
+        return records
+
+
+    def deleteAll(self):
+        for row in self.events.stream():
+            row.reference.delete()
+
+
+    def addFakeData(self):
+        self.addEvent(
+            'HackZurich 2019',
+            'Europe\'s biggest Hackathon',
+            47.389654,
+            8.516268,
+            datetime.strptime('2019-09-27 17:00', '%Y-%m-%d %H:%M'),
+            datetime.strptime('2019-09-29 17:00', '%Y-%m-%d %H:%M'),
+            'https://pbs.twimg.com/profile_images/1177302206296600576/QVs8cieJ_400x400.jpg'
+        )
         
+        self.addEvent(
+            'Indiennes. Material for a thousand stories ',
+            'In the 17th century indiennes – printed and painted cotton fabrics from India – became a popular commodity in Europe. Western manufacturers, including scores of Swiss companies, started producing their own versions of these precious items and very soon indiennes were everywhere. The exhibition at the National Museum tells the story of the production of these textiles, discusses colonial heritage and travels the trade routes between India, Europe and Switzerland. Very worth seeing are the many sumptuous fabrics, including valuable works on loan from Switzerland and abroad.',
+            47.379095,
+            8.540263,
+            datetime.strptime('2019-08-30 00:00', '%Y-%m-%d %H:%M'),
+            datetime.strptime('2020-01-20 00:00', '%Y-%m-%d %H:%M'),
+            'https://www.landesmuseum.ch/landesmuseum/ausstellungen/wechselausstellungen/2019/indiennes/image-thumb__4044__header_image/indiennes-header-landingpage~-~767w@2x.jpeg'
+        )
+
+        self.addEvent(
+            'GC - FC Chiasso',
+            'Challenge League Match',
+            47.382641,
+            8.503566,
+            datetime.strptime('2019-09-28 17:30', '%Y-%m-%d %H:%M'),
+            datetime.strptime('2019-09-28 19:30', '%Y-%m-%d %H:%M'),
+            'https://upload.wikimedia.org/wikipedia/commons/4/43/Letzigrund_Zuerich.jpg'
+        )
