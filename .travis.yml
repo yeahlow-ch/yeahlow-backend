@@ -1,11 +1,13 @@
 sudo: required
 language: bash
 before_install:
-  - wget -q -O - https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key | sudo apt-key add -
-  - echo "deb https://packages.cloudfoundry.org/debian stable main" | sudo tee /etc/apt/sources.list.d/cloudfoundry-cli.list
-  - sudo apt-get update
-  - sudo apt-get install -y cf-cli
-  - envsubst < firebase_key_base.json > firebase_key.json 
+- openssl aes-256-cbc -K $encrypted_ee7d0e70abe5_key -iv $encrypted_ee7d0e70abe5_iv
+  -in firebase_key.json.enc -out firebase_key.json -d
+- wget -q -O - https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key |
+  sudo apt-key add -
+- echo "deb https://packages.cloudfoundry.org/debian stable main" | sudo tee /etc/apt/sources.list.d/cloudfoundry-cli.list
+- sudo apt-get update
+- sudo apt-get install -y cf-cli
 script:
-  - cf login -a https://api.eu-de.bluemix.net -u "$CF_USERNAME" -p "$CF_PASSWORD"
-  - cf push -f manifest.yml
+- cf login -a https://api.eu-de.bluemix.net -u "$CF_USERNAME" -p "$CF_PASSWORD"
+- cf push -f manifest.yml
