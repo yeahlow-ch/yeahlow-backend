@@ -1,5 +1,9 @@
+import os
+
 from dotenv import load_dotenv
 from flask import Flask, jsonify, request
+
+port = int(os.getenv(‘PORT’, 3000))
 
 app = Flask(__name__)
 
@@ -36,4 +40,4 @@ def api_get_votes():
 
 if __name__ == '__main__':
     load_dotenv()
-    app.run(host='0.0.0.0', port=3000, debug=True)
+    app.run(host='0.0.0.0', port=port, debug=True)
