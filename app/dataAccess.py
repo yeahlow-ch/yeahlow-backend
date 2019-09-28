@@ -2,9 +2,7 @@ from math import sin, cos, sqrt, atan2, radians
 from random import *
 from datetime import *
 from dateutil.parser import parse
-from firebase_admin import firestore
 from enum import Enum
-from colour import Color
 
 
 class DataAccess:
@@ -99,8 +97,12 @@ class DataAccess:
         if not candidates:
             event_distances = []
             for event in self.events:
-                event_distances.append({'distance': self.calculateDistance(longitude, latitude, event['longitude'], event['latitude']), 'event':event})
-            return sorted(event_distances, key = lambda x: x['distance'])[0]['event']
+                distance = self.calculateDistance(longitude, latitude, event['longitude'], event['latitude'])
+                if distance > range:
+                    continue 
+
+                event_distances.append({'distance': distance, 'event':event})
+            return sorted(event_distances, key = lambda x: x['distance'], reverse=True)[0]['event']
         return choice(candidates)
 
     # src: https://stackoverflow.com/questions/19412462/getting-distance-between-two-points-based-on-latitude-longitude
