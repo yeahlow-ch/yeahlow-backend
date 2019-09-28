@@ -3,11 +3,14 @@ from random import *
 from datetime import *
 from dateutil.parser import parse
 from firebase_admin import firestore
+from enum import Enum
 
 class DataAccess:
 
     DOWNVOTE = 0
     UPVOTE = 1
+
+    Type = Enum('Type', 'sport party animal hackathon culture')
 
     def __init__(self):
         self.votes = []
@@ -55,10 +58,11 @@ class DataAccess:
         return records
 
 
-    def addEvent(self, name, description, latitude, longitude, start_time, end_time, image_url):
+    def addEvent(self, name, description, event_type, latitude, longitude, start_time, end_time, image_url):
         record = {
             'name' : name,
             'description' : description,
+            'type': event_type.name,
             'latitude' : latitude,
             'longitude' : longitude,
             'start_time' : start_time,
@@ -126,6 +130,7 @@ class DataAccess:
         self.addEvent(
             'HackZurich 2019',
             'Europe\'s biggest Hackathon',
+            self.Type.hackathon,
             47.389654,
             8.516268,
             parse('2019-09-27T17:00+02:00'),
@@ -136,6 +141,7 @@ class DataAccess:
         self.addEvent(
             'Indiennes. Material for a thousand stories ',
             'In the 17th century indiennes – printed and painted cotton fabrics from India – became a popular commodity in Europe. Western manufacturers, including scores of Swiss companies, started producing their own versions of these precious items and very soon indiennes were everywhere. The exhibition at the National Museum tells the story of the production of these textiles, discusses colonial heritage and travels the trade routes between India, Europe and Switzerland. Very worth seeing are the many sumptuous fabrics, including valuable works on loan from Switzerland and abroad.',
+            self.Type.culture,
             47.379095,
             8.540263,
             parse('2019-08-30T00:00+02:00'),
@@ -146,6 +152,7 @@ class DataAccess:
         self.addEvent(
             'GC - FC Chiasso',
             'Challenge League Match',
+            self.Type.sport,
             47.382641,
             8.540263,
             parse('2019-09-28T17:30+02:00'),
@@ -156,6 +163,7 @@ class DataAccess:
         self.addEvent(
             'Geneva',
             'Something far away to test',
+            self.Type.party,
             46.176820,
             6.040197,
             parse('2019-09-28T17:30+02:00'),
