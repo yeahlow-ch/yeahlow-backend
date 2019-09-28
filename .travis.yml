@@ -1,0 +1,10 @@
+sudo: required
+language: bash
+before_install:
+  - wget -q -O - https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key | sudo apt-key add -
+  - echo "deb https://packages.cloudfoundry.org/debian stable main" | sudo tee /etc/apt/sources.list.d/cloudfoundry-cli.list
+  - sudo apt-get update
+  - sudo apt-get install -y cf-cli
+script:
+  - cf login -a https://api.eu-de.bluemix.net -u "$CF_USERNAME" -p "$CF_PASSWORD"
+  - cf push -f manifest.yml
