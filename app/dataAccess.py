@@ -3,6 +3,7 @@ from random import *
 from datetime import *
 from dateutil.parser import parse
 from enum import Enum
+import csv
 
 
 class DataAccess:
@@ -67,7 +68,7 @@ class DataAccess:
         return records
 
 
-    def addEvent(self, id, name, description, event_type, latitude, longitude, start_time, end_time, image_url):
+    def addEvent(self, id, name, description, event_type, latitude, longitude, start_time, end_time):
         record = {
             'id': id,
             'name' : name,
@@ -76,8 +77,7 @@ class DataAccess:
             'latitude' : latitude,
             'longitude' : longitude,
             'start_time' : start_time,
-            'end_time' : end_time,
-            'image_url' : image_url
+            'end_time' : end_time
         }
 
         self.events.append(record)
@@ -129,13 +129,15 @@ class DataAccess:
 
 
     def addFakeData(self):
-        # long, lat, count
-        locations = [
-            (47.389717, 8.515884, 262, "Foundation Technopark Zurich"), # technopark
-            (47.386245, 8.574252, 123, "Zoo Zürich"), # zoo
-            (47.379190, 8.539851, 49, "Swiss National Museum"), # national museum
-            (47.382547, 8.503395, 150, "Stadion Letzigrund") # letzigrund
-        ]
+        locations = []
+        with open('./data/locations.csv', 'r') as csvfile:
+            reader = csv.reader(csvfile, delimiter=',')
+            for row in reader:
+                locations.append((
+                    float(row[0]),
+                    float(row[1]),
+                    int(row[2]),
+                    row[3]))
 
         for loc in locations:
             for i in range(loc[2]):
@@ -145,50 +147,20 @@ class DataAccess:
                     self.UPVOTE,
                     loc[3])
 
-        self.addEvent(
-            1,
-            'HackZurich 2019',
-            'Europe\'s biggest Hackathon',
-            self.Type.hackathon,
-            47.389654,
-            8.516268,
-            parse('2019-09-27T17:00+02:00'),
-            parse('2019-09-29T17:00+02:00'),
-            'https://pbs.twimg.com/profile_images/1177302206296600576/QVs8cieJ_400x400.jpg'
-        )
-        
-        self.addEvent(
-            2,
-            'Indiennes. Material for a thousand stories ',
-            'In the 17th century indiennes – printed and painted cotton fabrics from India – became a popular commodity in Europe. Western manufacturers, including scores of Swiss companies, started producing their own versions of these precious items and very soon indiennes were everywhere. The exhibition at the National Museum tells the story of the production of these textiles, discusses colonial heritage and travels the trade routes between India, Europe and Switzerland. Very worth seeing are the many sumptuous fabrics, including valuable works on loan from Switzerland and abroad.',
-            self.Type.culture,
-            47.379095,
-            8.540263,
-            parse('2019-08-30T00:00+02:00'),
-            parse('2020-01-20T00:00+02:00'),
-            'https://www.landesmuseum.ch/landesmuseum/ausstellungen/wechselausstellungen/2019/indiennes/image-thumb__4044__header_image/indiennes-header-landingpage~-~767w@2x.jpeg'
-        )
+        events = []
+        with open('./data/events.csv', 'r') as csvfile:
+            reader = csv.reader(csvfile, delimiter=',')
+            for row in reader:
+                events.append(row)
 
-        self.addEvent(
-            3,
-            'GC - FC Chiasso',
-            'Challenge League Match',
-            self.Type.sport,
-            47.382547,
-            8.503395,
-            parse('2019-09-28T17:30+02:00'),
-            parse('2019-09-28T19:30+02:00'),
-            'https://upload.wikimedia.org/wikipedia/commons/4/43/Letzigrund_Zuerich.jpg'
-        )
-
-        self.addEvent(
-            4,
-            'Geneva',
-            'Something far away to test',
-            self.Type.party,
-            46.176820,
-            6.040197,
-            parse('2019-09-28T17:30+02:00'),
-            parse('2019-09-28T19:30+02:00'),
-            'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Wappen_Genf_matt.svg/1280px-Wappen_Genf_matt.svg.png'
-        )
+        for i in range(len(events)):
+            self.addEvent(
+                i+1,
+                events[i][0],
+                events[i][1],
+                self.Type[events[i][2]],
+                float(events[i][3]),
+                float(events[i][4]),
+                parse(events[i][5]),
+                parse(events[i][6])
+            )
