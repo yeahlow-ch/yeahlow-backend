@@ -1,3 +1,4 @@
+from math import sin, cos, sqrt, atan2, radians
 from random import *
 from datetime import *
 from dateutil.parser import parse
