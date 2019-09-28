@@ -34,19 +34,22 @@ class DataAccess:
 
             latitude = '{0:.3f}'.format(row['latitude'])
             longitude = '{0:.3f}'.format(row['longitude'])
-            location = latitude + ',' + longitude + ',' + row['place']
-            if location in hotspots:
-                hotspots[location] += 1 
+            location = latitude + ',' + longitude 
+            place = row['place']
+            if place in hotspots:
+                hot = int(hotspots[place].split(',')[2]) + 1
+                hotspots[place] = latitude + ',' + longitude + ',' + str(hot)
             else:
-                hotspots[location] = 1
+                hotspots[place] = latitude + ',' + longitude + ',' + '1'
         records = []
-        for key in hotspots:
-            location = key.split(',')
+        for key, val in hotspots.items():
+            print(key, val)
+            location = val.split(',')
             records.append({
                 'latitude' : float(location[0]),
                 'longitude' : float(location[1]),
-                'hotness' : hotspots[key],
-                'place': location[2]
+                'hotness' : int(location[2]),
+                'place': key
             })
 
         return records
