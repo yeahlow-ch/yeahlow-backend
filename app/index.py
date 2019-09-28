@@ -3,7 +3,7 @@ import os
 from dotenv import load_dotenv
 from flask import Flask, jsonify, request
 
-port = int(os.getenv(‘PORT’, 3000))
+port = int(os.getenv('PORT', 3000))
 
 app = Flask(__name__)
 
