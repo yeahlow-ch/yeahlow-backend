@@ -1,0 +1,5 @@
+applications:
+- name: yeahlow
+  host: yeahlow
+  memory: 256M
+  instances: 2
