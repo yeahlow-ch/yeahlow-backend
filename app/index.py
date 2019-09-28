@@ -18,7 +18,7 @@ def api_post_votes():
     try:
         json_data = request.get_json()
 
-        dataAccess.add(
+        dataAccess.addVote(
             float(json_data['latitude']), 
             float(json_data['longitude']), 
             int(json_data['vote'])
@@ -48,8 +48,7 @@ def api_get_events():
 @app.route('/api/db', methods=['DELETE'])
 def api_delete_database():
     try:
-        VOTES.deleteAll()
-        EVENTS.deleteAll()
+        dataAccess.deleteAll()
         return jsonify({}), 200
     except Exception as e:
         return jsonify(**{"error": e})
@@ -58,8 +57,7 @@ def api_delete_database():
 @app.route('/api/db', methods=['POST'])
 def api_init_database():
     try:
-        VOTES.addFakeData()
-        EVENTS.addFakeData()
+        dataAccess.addFakeData()
         return jsonify({}), 200
     except Exception as e:
         return jsonify(**{"error": e})
