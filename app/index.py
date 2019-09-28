@@ -1,29 +1,24 @@
 import os
-from dataAccess import Votes, Events
+from dataAccess import DataAccess
 
 from dotenv import load_dotenv
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 
-import firebase_admin
-from firebase_admin import credentials, firestore
 
 port = int(os.getenv('PORT', 3000))
 
 app = Flask(__name__)
 CORS(app)
 
-cred = credentials.Certificate("./firebase_key.json")
-firebase_admin.initialize_app(cred)
-VOTES = Votes(firestore.client().collection('votes'))
-EVENTS = Events(firestore.client().collection('events'))
+dataAccess = DataAccess()
 
 @app.route('/api/votes', methods=['POST'])
 def api_post_votes():
     try:
         json_data = request.get_json()
 
-        VOTES.add(
+        dataAccess.add(
             float(json_data['latitude']), 
             float(json_data['longitude']), 
             int(json_data['vote'])
@@ -37,7 +32,7 @@ def api_post_votes():
 @app.route('/api/votes', methods=['GET'])
 def api_get_votes():
     try:
-        return jsonify(VOTES.getHotspots()), 200
+        return jsonify(dataAccess.getHotspots()), 200
     except Exception as e:
         return jsonify(**{"error": e})
 
@@ -45,7 +40,7 @@ def api_get_votes():
 @app.route('/api/events', methods=['GET'])
 def api_get_events():
     try:
-        return jsonify(EVENTS.getEvents()), 200
+        return jsonify(dataAccess.getEvents()), 200
     except Exception as e:
         return jsonify(**{"error": e})
 
