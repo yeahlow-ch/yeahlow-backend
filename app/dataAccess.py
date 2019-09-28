@@ -37,8 +37,8 @@ class Votes:
         for key in hotspots:
             location = key.split(',')
             records.append({
-                'latitude' : location[0],
-                'longitude' : location[1],
+                'latitude' : float(location[0]),
+                'longitude' : float(location[1]),
                 'hotness' : hotspots[key]
             })
 
