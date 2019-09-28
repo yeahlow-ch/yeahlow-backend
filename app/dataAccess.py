@@ -17,7 +17,6 @@ class DataAccess:
     def __init__(self):
         self.votes = []
         self.events = []
-        self.vote_colors = list(Color("#ffff00").range_to(Color("#9c0005"),250))
         self.addFakeData()
 
 
@@ -49,18 +48,21 @@ class DataAccess:
                 hotspots[place] = latitude + ',' + longitude + ',' + '1'
         records = []
         for key, val in hotspots.items():
-            print(key, val)
             location = val.split(',')
             hot = int(location[2])
-            if hot < 250:
-                hot_color = self.vote_colors[hot]
+            if 250 <= hot:
+                hot_color = '#700000'
+            elif 150 <= hot <= 249:
+                hot_color = '#f20000'
+            elif 50 <= hot <= 149:
+                hot_color = '#ff6600'
             else:
-                hot_color = self.vote_colors[-1]
+                hot_color = '#ffe20a'
             records.append({
                 'latitude' : float(location[0]),
                 'longitude' : float(location[1]),
                 'hotness' : hot,
-                'hotness_color': hot_color.hex,
+                'hotness_color': hot_color,
                 'place': key
             })
 
@@ -123,9 +125,9 @@ class DataAccess:
     def addFakeData(self):
         # long, lat, count
         locations = [
-            (47.389717, 8.515884, 200, "Foundation Technopark Zurich"), # technopark
-            (47.386245, 8.574252, 150, "Zoo Zürich"), # zoo
-            (47.379190, 8.539851, 50, "Swiss National Museum"), # national museum
+            (47.389717, 8.515884, 262, "Foundation Technopark Zurich"), # technopark
+            (47.386245, 8.574252, 123, "Zoo Zürich"), # zoo
+            (47.379190, 8.539851, 49, "Swiss National Museum"), # national museum
             (47.382547, 8.503395, 150, "Stadion Letzigrund") # letzigrund
         ]
 
