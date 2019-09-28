@@ -168,8 +168,8 @@ class DataAccess:
             'GC - FC Chiasso',
             'Challenge League Match',
             self.Type.sport,
-            47.382641,
-            8.540263,
+            47.382547,
+            8.503395,
             parse('2019-09-28T17:30+02:00'),
             parse('2019-09-28T19:30+02:00'),
             'https://upload.wikimedia.org/wikipedia/commons/4/43/Letzigrund_Zuerich.jpg'
