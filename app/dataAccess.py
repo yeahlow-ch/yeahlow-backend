@@ -153,3 +153,13 @@ class DataAccess:
             parse('2019-09-28T19:30+02:00'),
             'https://upload.wikimedia.org/wikipedia/commons/4/43/Letzigrund_Zuerich.jpg'
         )
+
+        self.addEvent(
+            'Geneva',
+            'Something far away to test',
+            46.176820,
+            6.040197,
+            parse('2019-09-28T17:30+02:00'),
+            parse('2019-09-28T19:30+02:00'),
+            'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Wappen_Genf_matt.svg/1280px-Wappen_Genf_matt.svg.png'
+        )
