@@ -59,7 +59,7 @@ class DataAccess:
             elif 50 <= hot <= 149:
                 hot_color = '#ff6600'
             else:
-                hot_color = '#ffe20a'
+                hot_color = '#f7a61b'
             records.append({
                 'latitude' : float(location[0]),
                 'longitude' : float(location[1]),
